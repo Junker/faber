@@ -37,8 +37,10 @@
 
 (define (print-tasks)
   (show #t "Available tasks:" nl)
-  (dolist (task (sort (hash-table-keys *task-table*) string<?))
-    (show #t (as-green task) nl)))
+  (let1 tasks (map symbol->string (hash-table-keys *task-table*))
+    (dolist (task (sort tasks string<?))
+      (show #t (as-green task) nl))))
+
 
 (define (exit-with-error err :optional code)
   (show #t (as-red err))
