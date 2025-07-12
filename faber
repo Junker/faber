@@ -42,8 +42,11 @@
       (show #t (as-green task) nl))))
 
 (define (print-help)
+  (show #t (as-yellow "Usage: ") (as-green "faber ")
+        "[OPTIONS] [TASK] [ARGUMENTS]" nl nl)
+  (show #t (as-yellow "Options:") nl)
   (for-each (lambda (pair)
-              (show #t (as-green (fitted/right 34 (car pair)))
+              (show #t (as-green "  " (fitted/right 34 (car pair)))
                     (cdr pair) nl))
             '(("-f, --faberfile <FABERFILE>" . "Use <FABERFILE> as justfile")
               ("-l, --list" . "List available tasks")
