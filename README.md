@@ -28,27 +28,18 @@ Tasks are stored in a file called `faberfile`:
 ```
 
 ```shell
-faber build
-faber sloc
+> faber build
+> faber sloc
 ```
 
 tasks with arguments:
 ```scheme
 (define-task touch (path)
   (touch-file path))
-  
-(define-task test ()
-  (run-task build)
-  ($ ./test))
-
-(define-task sloc ()
-  (let1 cnt (<$ "wc -l *.c") ;
-    (show #t cnt " lines of code" nl)))
 ```
 
 ```shell
-faber touch test.txt
-faber sloc
+> faber touch test.txt
 ```
 
 default task:
@@ -59,7 +50,7 @@ default task:
 
 ## Modules
 
-this modules imported already and can bi used in `faberfile`:
+This modules imported already and can be used in `faberfile`:
 ```
 - srfi-1
 - srfi-13
@@ -69,7 +60,7 @@ this modules imported already and can bi used in `faberfile`:
 - file.util
 ```
 
-you can import module in `faberfile` like this:
+You can import module in `faberfile` like this:
 ```scheme
 (use rfc.http)
 (define-task api-call ()
@@ -81,9 +72,9 @@ you can import module in `faberfile` like this:
 
 ## Shorthand macros
 
-`$` - macro for `do-process!`
-`<$` - macro for `process-output->string`
-`task` - alias for `define-task`
+- `$` - macro for `do-process!`
+- `<$` - macro for `process-output->string`
+- `task` - alias for `define-task`
 
 ## Requirements
 
