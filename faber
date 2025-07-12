@@ -1,0 +1,81 @@
+#!/usr/bin/env gosh
+
+(use srfi-1)
+(use srfi-13)
+(use scheme.show)
+(use scheme.show.color)
+(use gauche.process)
+(use gauche.parseopt)
+(use file.util)
+
+(define *task-table* (make-hash-table 'eq?))
+(define *default-file-name* "faberfile")
+(define *verbose* #f)
+
+(define-macro (define-task name . rest)
+  `(hash-table-put! *task-table*
+                    (quote ,name) (lambda ,(car rest) ,@(cdr rest))))
+
+(define-macro (task name . rest)
+  `(define-task ,name ,@rest))
+
+(define (%run-task name args)
+  (when *verbose*
+    (show #t (as-green (format #f "Running task ~S..." name)) nl))
+  (apply (hash-table-get *task-table* name) args))
+
+(define-macro (run-task name . args)
+  `(%run-task (quote ,name) (list ,@args)))
+
+(define-macro ($ . args)
+  `(begin
+     (show #t (as-bold (format #f "~S" (quote ,@args))) nl)
+     (do-process! (quote ,@args))))
+
+(define-macro (<$ . args)
+  `(process-output->string ,@args))
+
+(define (print-tasks)
+  (show #t "Available tasks:" nl)
+  (dolist (task (sort (hash-table-keys *task-table*) string<?))
+    (show #t (as-green task) nl)))
+
+(define (exit-with-error err :optional code)
+  (show #t (as-red err))
+  (exit (or code 1)))
+
+(define (load-faber-file file)
+  (cond ((not (file-exists? file))
+         (exit-with-error (format #f "File ~S doesn't exist" file)))
+        ((not (file-is-readable? file))
+         (exit-with-error (format #f "File ~S is unreadable" file)))
+        (#t
+         (load file))))
+
+(define (main args)
+  (let-args (cdr args)
+    ((%help "h|help")
+     (%list "l|list")
+     (%file "f|file=s")
+     (%verbose "v|verbose")
+     . restargs)
+    (if %help
+        (begin
+          (print-help)
+          (exit))
+        (load-faber-file (if %file
+                             (decompose-path (expand-path %file))
+                             (build-path (current-directory)
+                                         *default-file-name*))))
+    (cond ((null? args)
+           (if (hash-table-get *task-table* 'default)
+               (run-task default)
+               (print-tasks)))
+          (%list
+           (print-tasks))
+          ((not (null? restargs))
+           (begin
+             (when %verbose
+               (set! *verbose* #t))
+             (%run-task (string->symbol (car restargs))
+                        (cdr restargs)))))))
