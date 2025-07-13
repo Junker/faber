@@ -80,8 +80,8 @@
           (print-help)
           (exit))
         (load-faber-file %file))
-    (cond ((null? args)
-           (if (hash-table-get *task-table* 'default)
+    (cond ((null? restargs)
+           (if (hash-table-exists? *task-table* 'default)
                (run-task default)
                (print-tasks)))
           (%list
