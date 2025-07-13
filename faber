@@ -22,7 +22,11 @@
 (define (%run-task name args)
   (when *verbose*
     (show #t (as-green (format #f "Running task ~S..." name)) nl))
-  (apply (hash-table-get *task-table* name) args))
+  (let1 taskfun (hash-table-ref *task-table* name
+                                (lambda ()
+                                  (exit-with-error
+                                   (format #f "Task '~S' doesn't exist" name))))
+    (apply taskfun args)))
 
 (define-macro (run-task name . args)
   `(%run-task (quote ,name) (list ,@args)))
