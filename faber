@@ -31,13 +31,39 @@
 (define-macro (run-task name . args)
   `(%run-task (quote ,name) (list ,@args)))
 
-(define-macro ($ . args)
-  `(begin
-     (show #t (as-bold (format #f "~S" (quote ,@args))) nl)
-     (do-process! ,@args)))
+(define (print-verbose-command command)
+  (when *verbose*
+    (show #t (as-bold (format #f "~A" command)) nl)))
 
-(define-macro (<$ . args)
-  `(process-output->string ,@args))
+(define (run command . args)
+  (print-verbose-command command)
+  (apply do-process! command args))
+
+(define (run/string command . args)
+  (print-verbose-command command)
+  (apply process-output->string command args))
+
+(define (run/strings command . args)
+  (print-verbose-command command)
+  (apply process-output->string-list command args))
+
+(define (run/pipe commands . args)
+  (print-verbose-command (string-join (map (lambda (cmd) (format #f "~A" cmd))
+                                           commands)
+                                      " | "))
+  (apply do-pipeline commands args))
+
+(define (process-output->file command filename . opts)
+  (call-with-output-file filename
+    (lambda (in)
+      (apply call-with-input-process command
+             (lambda (out)
+               (copy-port out in))
+             opts))))
+
+(define (run/file command . args)
+  (print-verbose-command command)
+  (apply process-output->file command args))
 
 (define (print-tasks)
   (show #t "Available tasks:" nl)
