@@ -1,6 +1,6 @@
 #!/usr/bin/env gosh
 
-(use srfi-1)
+(use scheme.list)
 (use srfi-13)
 (use scheme.show)
 (use scheme.show.color)
