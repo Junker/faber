@@ -23,7 +23,7 @@ Tasks are stored in a file called `faberfile`:
   ($ ./test))
 
 (define-task sloc ()
-  (let1 cnt (<$ "wc -l *.c") ;
+  (let1 cnt (<$ "wc -l *.c")
     (show #t cnt " lines of code" nl)))
 ```
 
@@ -51,14 +51,12 @@ default task:
 ## Modules
 
 This modules imported already and can be used in `faberfile`:
-```
-- srfi-1
-- srfi-13
-- scheme.show
-- scheme.show.color
-- gauche.process
-- file.util
-```
+- [scheme.list](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-lists)
+- [srfi-13](https://practical-scheme.net/gauche/man/gauche-refe/String-library.html#String-library)
+- [scheme.show](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-combinator-formatting)
+- [scheme.show.color](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-combinator-formatting)
+- [gauche.process](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#High_002dlevel-process-interface)
+- [file.util](https://practical-scheme.net/gauche/man/gauche-refe/Filesystem-utilities.html#Filesystem-utilities)
 
 You can import module in `faberfile` like this:
 ```scheme
