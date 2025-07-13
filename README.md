@@ -1,5 +1,5 @@
 Faber is a task runner designed to leverage the power and flexibility of Gauche Scheme.
-Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax and semantics. 
+Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax and semantics.
 This approach not only reduces the learning curve but also offers the full expressive power of Scheme for complex build tasks.
 
 *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
@@ -16,14 +16,18 @@ Tasks are stored in a file called `faberfile`:
 
 ```scheme
 (define-task build ()
-  ($ '(cc main.c foo.c bar.c -o main)))
-  
+  (run '(cc main.c foo.c bar.c -o main)))
+
 (define-task test ()
   (run-task build)
-  ($ '(./test)))
+  (run "./test"))
+
+(define-task test2 ()
+  (run/pipe '((ls -l)
+              (wc -l))))
 
 (define-task sloc ()
-  (let1 cnt (<$ "wc -l *.c")
+  (let1 cnt (run/string '(wc -l "*.c"))
     (show #t cnt " lines of code" nl)))
 ```
 
@@ -68,10 +72,13 @@ You can import module in `faberfile` like this:
 	(display body)))
 ```
 
-## Shorthand macros
+## Shorthands
 
-- `$` - macro for `do-process!`
-- `<$` - macro for `process-output->string`
+- `run` - alias for `do-process!`
+- `run/string` - alias for `process-output->string`
+- `run/strings` - alias for `process-output->strings`
+- `run/pipe` - alias for `do-pipeline`
+- `run/file` - alias for `process-output->file`
 - `task` - alias for `define-task`
 
 ## Requirements
@@ -81,4 +88,3 @@ You can import module in `faberfile` like this:
 ## Documentation
 
 - [Gauche Scheme Manual](https://practical-scheme.net/gauche/man/gauche-refe/index.html)
-
