@@ -68,21 +68,18 @@
   (let-args (cdr args)
     ((%help "h|help")
      (%list "l|list")
-     (%file "f|faberfile=s")
+     (%file "f|faberfile=s" (build-path (current-directory)
+                                        *default-file-name*))
      (%workdir "d|working-directory=s")
-     (%verbose "v|verbose")
+     (%verbose "v|verbose" #f)
      . restargs)
-    (when %file
-      (current-directory (decompose-path (expand-path %file))))
-    (when %workdir
-      (current-directory %workdir))
+    (current-directory (or %workdir
+                           (decompose-path (expand-path %file))))
     (if %help
         (begin
           (print-help)
           (exit))
-        (load-faber-file (or %file
-                             (build-path (current-directory)
-                                         *default-file-name*))))
+        (load-faber-file %file))
     (cond ((null? args)
            (if (hash-table-get *task-table* 'default)
                (run-task default)
@@ -91,7 +88,6 @@
            (print-tasks))
           ((not (null? restargs))
            (begin
-             (when %verbose
-               (set! *verbose* #t))
+             (set! *verbose* %verbose)
              (%run-task (string->symbol (car restargs))
                         (cdr restargs)))))))
