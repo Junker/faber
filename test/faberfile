@@ -1,0 +1,29 @@
+(define-task test1 ()
+  (display "test1"))
+
+(define-task test-with-arg (arg)
+  (display (string-append arg "-result")))
+
+(define-task run-task ()
+  (run-task test1))
+
+(define-task run ()
+  (run '("readlink" "-f" "faberfile")))
+
+(define-task run-string ()
+  (display (string-append "result:"
+                          (run/string '("dirname" "faberfile")))))
+
+(define-task run-strings ()
+  (display (length (run/strings '("ls" "-l")))))
+
+(define-task run-pipe ()
+  (run/pipe '((echo "Hello")
+              (wc -l))))
+
+(define-task run-file ()
+  (call-with-temporary-file
+   (lambda (_ file)
+     (run/file '(echo "Hello")
+               file)
+     (display (file->string file)))))
