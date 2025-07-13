@@ -68,11 +68,14 @@
   (let-args (cdr args)
     ((%help "h|help")
      (%list "l|list")
-     (%file "f|faberfile=s" (build-path (current-directory)
-                                        *default-file-name*))
+     (%file "f|faberfile=s" *default-file-name*)
      (%workdir "d|working-directory=s")
      (%verbose "v|verbose" #f)
      . restargs)
+    ;;
+    (when (relative-path? %file)
+      (set! %file (build-path (current-directory)
+                              %file)))
     (current-directory (or %workdir
                            (decompose-path (expand-path %file))))
     (if %help
