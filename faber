@@ -30,7 +30,7 @@
 (define-macro ($ . args)
   `(begin
      (show #t (as-bold (format #f "~S" (quote ,@args))) nl)
-     (do-process! (quote ,@args))))
+     (do-process! ,@args)))
 
 (define-macro (<$ . args)
   `(process-output->string ,@args))

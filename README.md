@@ -16,11 +16,11 @@ Tasks are stored in a file called `faberfile`:
 
 ```scheme
 (define-task build ()
-  ($ cc main.c foo.c bar.c -o main))
+  ($ '(cc main.c foo.c bar.c -o main)))
   
 (define-task test ()
   (run-task build)
-  ($ ./test))
+  ($ '(./test)))
 
 (define-task sloc ()
   (let1 cnt (<$ "wc -l *.c")
