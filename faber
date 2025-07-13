@@ -90,4 +90,5 @@
            (begin
              (set! *verbose* %verbose)
              (%run-task (string->symbol (car restargs))
-                        (cdr restargs)))))))
+                        (cdr restargs))))))
+  0)
