@@ -39,19 +39,28 @@
   (print-verbose-command command)
   (apply do-process! command args))
 
-(define (run/string command . args)
+(define (run-string command . args)
   (print-verbose-command command)
   (apply process-output->string command args))
 
-(define (run/strings command . args)
+(define (run-lines command . args)
   (print-verbose-command command)
   (apply process-output->string-list command args))
 
-(define (run/pipe commands . args)
+(define (run-pipe commands . args)
   (print-verbose-command (string-join (map (lambda (cmd) (format #f "~A" cmd))
                                            commands)
                                       " | "))
   (apply do-pipeline commands args))
+
+(define-macro (run* args)
+  `(run (list ,@args)))
+
+(define-macro (run-string* args)
+  `(run-string (list ,@args)))
+
+(define-macro (run-lines* args)
+  `(run-lines (list ,@args)))
 
 (define (process-output->file command filename . opts)
   (call-with-output-file filename

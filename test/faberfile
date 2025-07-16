@@ -1,3 +1,6 @@
+(define home (home-directory))
+(define cache-dir #"~|home|/.cache/")
+
 (define-task test1 ()
   (display "test1"))
 
@@ -12,18 +15,18 @@
 
 (define-task run-string ()
   (display (string-append "result:"
-                          (run/string '("dirname" "faberfile")))))
+                          (run-string '("dirname" "faberfile")))))
 
-(define-task run-strings ()
-  (display (length (run/strings '("ls" "-l")))))
+(define-task run-lines ()
+  (display (length (run-lines '("ls" "-l")))))
 
 (define-task run-pipe ()
-  (run/pipe '((echo "Hello")
+  (run-pipe '((echo "Hello")
               (wc -l))))
 
 (define-task run-file ()
   (call-with-temporary-file
    (lambda (_ file)
-     (run/file '(echo "Hello")
+     (run-file '(echo "Hello")
                file)
      (display (file->string file)))))

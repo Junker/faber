@@ -23,11 +23,11 @@ Tasks are stored in a file called `faberfile`:
   (run "./test"))
 
 (define-task test2 ()
-  (run/pipe '((ls -l)
+  (run-pipe '((ls -l)
               (wc -l))))
 
 (define-task sloc ()
-  (let1 cnt (run/string '(wc -l "*.c"))
+  (let1 cnt (run-string '(wc -l "*.c"))
     (show #t cnt " lines of code" nl)))
 ```
 
@@ -75,10 +75,10 @@ You can import module in `faberfile` like this:
 ## Shorthands
 
 - `run` - alias for `do-process!`
-- `run/string` - alias for `process-output->string`
-- `run/strings` - alias for `process-output->strings`
-- `run/pipe` - alias for `do-pipeline`
-- `run/file` - alias for `process-output->file`
+- `run-string` - alias for `process-output->string`
+- `run-lines` - alias for `process-output->string-list`
+- `run-pipe` - alias for `do-pipeline`
+- `run-file` - alias for `process-output->file`
 - `task` - alias for `define-task`
 
 ## Requirements

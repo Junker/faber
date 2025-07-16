@@ -22,8 +22,8 @@
 (test* "--run-string" "result:."
        (run-faber "run-string"))
 
-(test* "--run-strings" "3"
-       (run-faber "run-strings"))
+(test* "--run-lines" "3"
+       (run-faber "run-lines"))
 
 (test* "--run-pipe" "1"
        (run-faber "run-pipe"))
