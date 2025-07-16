@@ -17,6 +17,9 @@ Tasks are stored in a file called `faberfile`:
 ```scheme
 (define-task build ()
   (run '(cc main.c foo.c bar.c -o main)))
+;; or
+(define-task build ()
+  (sh "cc main.c foo.c bar.c -o main"))
 
 (define-task test ()
   (run-task build)
@@ -74,6 +77,7 @@ You can import module in `faberfile` like this:
 
 ## Shorthands
 
+- `sh` - alias for `sys-system`
 - `run` - alias for `do-process!`
 - `run-string` - alias for `process-output->string`
 - `run-lines` - alias for `process-output->string-list`

@@ -53,6 +53,10 @@
                                       " | "))
   (apply do-pipeline commands args))
 
+(define (sh command)
+  (print-verbose-command command)
+  (sys-system command))
+
 (define-macro (run* args)
   `(run (list ,@args)))
 

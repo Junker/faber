@@ -30,3 +30,6 @@
 
 (test* "--run-file" "Hello"
        (run-faber "run-file"))
+
+(test* "--sh" "Hello world"
+       (run-faber "sh"))

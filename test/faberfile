@@ -30,3 +30,6 @@
      (run-file '(echo "Hello")
                file)
      (display (file->string file)))))
+
+(define-task sh ()
+  (sh "echo 'Hello world'"))
