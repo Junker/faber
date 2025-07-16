@@ -74,7 +74,7 @@
                (copy-port out in))
              opts))))
 
-(define (run/file command . args)
+(define (run-file command . args)
   (print-verbose-command command)
   (apply process-output->file command args))
 
