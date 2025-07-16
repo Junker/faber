@@ -116,16 +116,17 @@
      (%verbose "v|verbose" #f)
      . restargs)
     ;;
-    (when (relative-path? %file)
-      (set! %file (build-path (current-directory)
-                              %file)))
-    (current-directory (or %workdir
-                           (decompose-path (expand-path %file))))
-    (if %help
-        (begin
-          (print-help)
-          (exit))
-        (load-faber-file %file))
+    (when %help
+      (begin
+        (print-help)
+        (exit)))
+    (let1 absfile (if (absolute-path? %file)
+                      %file
+                      (build-path (current-directory)
+                                  %file))
+      (current-directory (or %workdir
+                             (decompose-path (expand-path absfile))))
+      (load-faber-file absfile))
     (cond ((null? restargs)
            (if (hash-table-exists? *task-table* 'default)
                (run-task default)
