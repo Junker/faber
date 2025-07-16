@@ -7,6 +7,15 @@
 (define (run-faber . args)
   (process-output->string (cons "../faber" args)))
 
+(test* "--option-faberfile" #t
+       (do-process '("../faber" "--faberfile" "./faberfile")
+                   :output :null))
+
+(test* "--option-faberfile2" #t
+       (do-process `("../faber"
+                     "--faberfile" ,(build-path (current-directory) "faberfile"))
+                   :output :null))
+
 (test* "--test1" "test1"
        (run-faber "test1"))
 
