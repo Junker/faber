@@ -13,6 +13,9 @@
 (define-task run ()
   (run '("readlink" "-f" "faberfile")))
 
+(define-task run-quiet ()
+  (run '("echo" "TEST") :quiet #t))
+
 (define-task run-w-error ()
   (run '("cat" "unexisted")))
 

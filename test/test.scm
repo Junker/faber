@@ -33,6 +33,9 @@
 (test* "--run" (build-path (current-directory) "faberfile")
        (run-faber "run"))
 
+(test* "--run-quiet" ""
+       (run-faber "run-quiet"))
+
 (test* "--run-w-error" (test-error)
        (run-faber-quiet "run-w-error"))
 

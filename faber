@@ -35,10 +35,11 @@
   (when *verbose*
     (show #t (as-bold (format #f "~A" command)) nl)))
 
-(define (run command :key (noerr #f))
+(define (run command :key (noerr #f) (quiet #f))
   (print-verbose-command command)
   (do-process command
-              :on-abnormal-exit (if noerr #f :error)))
+              :on-abnormal-exit (if noerr #f :error)
+              :output (if quiet :null #f)))
 
 (define (run-string command :key (noerr #f))
   (print-verbose-command command)
@@ -50,12 +51,13 @@
   (process-output->string-list command
                                :on-abnormal-exit (if noerr #f :error)))
 
-(define (run-pipe commands :key (noerr #f))
+(define (run-pipe commands :key (noerr #f) (quiet #f))
   (print-verbose-command (string-join (map (lambda (cmd) (format #f "~A" cmd))
                                            commands)
                                       " | "))
   (do-pipeline commands
-               :on-abnormal-exit (if noerr #f :error)))
+               :on-abnormal-exit (if noerr #f :error)
+               :output (if quiet :null #f)))
 
 (define (sh command :key (noerr #f))
   (print-verbose-command command)
