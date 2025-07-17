@@ -65,13 +65,13 @@
         (error (format #f "process exited abnormally with exit code ~A"
                        errcode)))))
 
-(define-macro (run* args)
+(define-macro (run* . args)
   `(run (list ,@args)))
 
-(define-macro (run-string* args)
+(define-macro (run-string* . args)
   `(run-string (list ,@args)))
 
-(define-macro (run-lines* args)
+(define-macro (run-lines* . args)
   `(run-lines (list ,@args)))
 
 (define (process-output->file command filename . opts)
