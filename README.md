@@ -1,8 +1,10 @@
 Faber is a task runner designed to leverage the power and flexibility of Gauche Scheme.
 Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax and semantics.
-This approach not only reduces the learning curve but also offers the full expressive power of Scheme for complex build tasks.
 
 *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
+
+## Warning
+This software is still ALPHA quality.
 
 ## Usage
 Tasks are stored in a file called `faberfile`:
@@ -23,6 +25,8 @@ Tasks are stored in a file called `faberfile`:
 
 (define-task test ()
   (run-task build)
+  (run "/usr/bin/false" :noerr #t)
+  (run '(echo "Hello") :quiet #t)
   (run "./test"))
 
 (define-task test2 ()
@@ -77,12 +81,12 @@ You can import module in `faberfile` like this:
 
 ## Shorthands
 
-- `sh` - alias for `sys-system`
-- `run` - alias for `do-process!`
-- `run-string` - alias for `process-output->string`
-- `run-lines` - alias for `process-output->string-list`
-- `run-pipe` - alias for `do-pipeline`
-- `run-file` - alias for `process-output->file`
+- `sh` - uses `sys-system`
+- `run` - uses `do-process`
+- `run-string` - uses `process-output->string`
+- `run-lines` - uses `process-output->string-list`
+- `run-pipe` - uses `do-pipeline`
+- `run-file` - uses `process-output->file`
 - `task` - alias for `define-task`
 
 ## Requirements
