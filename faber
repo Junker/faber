@@ -35,27 +35,35 @@
   (when *verbose*
     (show #t (as-bold (format #f "~A" command)) nl)))
 
-(define (run command . args)
+(define (run command :key (noerr #f))
   (print-verbose-command command)
-  (apply do-process! command args))
+  (do-process command
+              :on-abnormal-exit (if noerr #f :error)))
 
-(define (run-string command . args)
+(define (run-string command :key (noerr #f))
   (print-verbose-command command)
-  (apply process-output->string command args))
+  (process-output->string command
+                          :on-abnormal-exit (if noerr #f :error)))
 
-(define (run-lines command . args)
+(define (run-lines command :key (noerr #f))
   (print-verbose-command command)
-  (apply process-output->string-list command args))
+  (process-output->string-list command
+                               :on-abnormal-exit (if noerr #f :error)))
 
-(define (run-pipe commands . args)
+(define (run-pipe commands :key (noerr #f))
   (print-verbose-command (string-join (map (lambda (cmd) (format #f "~A" cmd))
                                            commands)
                                       " | "))
-  (apply do-pipeline commands args))
+  (do-pipeline commands
+               :on-abnormal-exit (if noerr #f :error)))
 
-(define (sh command)
+(define (sh command :key (noerr #f))
   (print-verbose-command command)
-  (sys-system command))
+  (let1 errcode (sys-system command)
+    (if (and (not noerr)
+             (positive? errcode))
+        (error (format #f "process exited abnormally with exit code ~A"
+                       errcode)))))
 
 (define-macro (run* args)
   `(run (list ,@args)))
