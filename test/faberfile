@@ -13,6 +13,12 @@
 (define-task run ()
   (run '("readlink" "-f" "faberfile")))
 
+(define-task run-w-error ()
+  (run '("cat" "unexisted")))
+
+(define-task run-w-error-noerr ()
+  (run '("false") :noerr #t))
+
 (define-task run-string ()
   (display (string-append "result:"
                           (run-string '("dirname" "faberfile")))))
@@ -33,3 +39,6 @@
 
 (define-task sh ()
   (sh "echo 'Hello world'"))
+
+(define-task sh2 ()
+  (sh "echo $HOME"))

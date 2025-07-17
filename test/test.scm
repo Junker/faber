@@ -7,14 +7,19 @@
 (define (run-faber . args)
   (process-output->string (cons "../faber" args)))
 
+(define (run-faber-quiet . args)
+  (do-process! (cons "../faber" args)
+               :output :null
+               :error :null))
+
 (test* "--option-faberfile" #t
-       (do-process '("../faber" "--faberfile" "./faberfile")
-                   :output :null))
+       (run-faber-quiet "--faberfile" "./faberfile"))
 
 (test* "--option-faberfile2" #t
-       (do-process `("../faber"
-                     "--faberfile" ,(build-path (current-directory) "faberfile"))
-                   :output :null))
+       (run-faber-quiet "--faberfile" (build-path (current-directory) "faberfile")))
+
+(test* "--option-faberfile3" (test-error)
+       (run-faber-quiet "--faberfile" "unexisted"))
 
 (test* "--test1" "test1"
        (run-faber "test1"))
@@ -27,6 +32,12 @@
 
 (test* "--run" (build-path (current-directory) "faberfile")
        (run-faber "run"))
+
+(test* "--run-w-error" (test-error)
+       (run-faber-quiet "run-w-error"))
+
+(test* "run-w-error-noerr" ""
+       (run-faber "run-w-error-noerr"))
 
 (test* "--run-string" "result:."
        (run-faber "run-string"))
@@ -42,3 +53,6 @@
 
 (test* "--sh" "Hello world"
        (run-faber "sh"))
+
+(test* "--sh2" (home-directory)
+       (run-faber "sh2"))
