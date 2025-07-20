@@ -25,8 +25,8 @@ Tasks are stored in a file called `faberfile`:
 
 (define-task test ()
   (run-task build)
-  (run "/usr/bin/false" :noerr #t)
-  (run '(echo "Hello") :quiet #t)
+  (run "/usr/bin/false" :noerr? #t)
+  (run '(echo "Hello") :quiet? #t)
   (run "./test"))
 
 (define-task test2 ()

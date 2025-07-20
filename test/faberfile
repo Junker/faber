@@ -14,13 +14,13 @@
   (run '("readlink" "-f" "faberfile")))
 
 (define-task run-quiet ()
-  (run '("echo" "TEST") :quiet #t))
+  (run '("echo" "TEST") :quiet? #t))
 
 (define-task run-w-error ()
   (run '("cat" "unexisted")))
 
 (define-task run-w-error-noerr ()
-  (run '("false") :noerr #t))
+  (run '("false") :noerr? #t))
 
 (define-task run-string ()
   (display (string-append "result:"
