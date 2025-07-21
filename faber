@@ -90,9 +90,12 @@
 
 (define (print-tasks)
   (show #t "Available tasks:" nl)
-  (let1 tasks (map symbol->string (hash-table-keys *task-table*))
-    (dolist (task (sort tasks string<?))
-      (show #t (as-green task) nl))))
+  (let1 tasks (hash-table-map *task-table*
+                              (lambda (name proc)
+                                (cons (symbol->string name)
+                                      (cdr (procedure-info proc)))))
+    (dolist (task (sort tasks string<? car))
+      (show #t (as-bold (as-green (car task))) " " (as-yellow (cdr task)) nl))))
 
 (define (print-help)
   (show #t (as-yellow "Usage: ") (as-green "faber ")
