@@ -1,10 +1,10 @@
 Faber is a task runner designed to leverage the power and flexibility of Gauche Scheme.
-Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax and semantics.
+Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax.
 
 *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
 
 ## Warning
-This software is still ALPHA quality.
+This software is still BETA quality. The APIs will be likely to change.
 
 ## Usage
 Tasks are stored in a file called `faberfile`:
@@ -81,11 +81,11 @@ You can import module in `faberfile` like this:
 
 ## Shorthands
 
-- `sh` - uses `sys-system`
-- `run` - uses `do-process`
-- `run-string` - uses `process-output->string`
-- `run-lines` - uses `process-output->string-list`
-- `run-pipe` - uses `do-pipeline`
+- `sh` - uses [`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem)
+- `run` - uses [`do-process`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dprocess)
+- `run-string` - uses [`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring)
+- `run-lines` - uses [`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist)
+- `run-pipe` - uses [`do-pipeline`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dpipeline)
 - `run-file` - uses `process-output->file`
 - `task` - alias for `define-task`
 
