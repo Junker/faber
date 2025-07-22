@@ -97,6 +97,9 @@
     (dolist (task (sort tasks string<? car))
       (show #t (as-bold (as-green (car task))) " " (as-yellow (cdr task)) nl))))
 
+(define (print-summary)
+  (show #t (joined displayed (hash-table-keys *task-table*) " ")))
+
 (define (print-help)
   (show #t (as-yellow "Usage: ") (as-green "faber ")
         "[OPTIONS] [TASK] [ARGUMENTS]" nl nl)
@@ -124,6 +127,7 @@
   (let-args (cdr args)
     ((%help "h|help")
      (%list "l|list")
+	   (%summary "s|summary")
      (%file "f|faberfile=s" *default-file-name*)
      (%workdir "d|working-directory=s")
      (%verbose "v|verbose" #f)
@@ -140,12 +144,14 @@
       (current-directory (or %workdir
                              (decompose-path (expand-path absfile))))
       (load-faber-file absfile))
-    (cond ((null? restargs)
+    (cond (%list
+           (print-tasks))
+          (%summary
+           (print-summary))
+          ((null? restargs)
            (if (hash-table-exists? *task-table* 'default)
                (run-task default)
                (print-tasks)))
-          (%list
-           (print-tasks))
           ((not (null? restargs))
            (begin
              (set! *verbose* %verbose)
