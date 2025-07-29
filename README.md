@@ -10,26 +10,27 @@ This software is still BETA quality. The APIs will be likely to change.
 Tasks are stored in a file called `faberfile`:
 ```scheme
 (define-task task-name ()
-  (display "This is a recipe!"))
+  (display "This is a task!"))
 ;; OR
 (task task-name ()
-  (display "This is a recipe!"))
+  (display "This is a task!"))
 ```
 
 ```scheme
 (define-task build ()
   (run '(cc main.c foo.c bar.c -o main)))
 ;; or
-(define-task build ()
-  (sh "cc main.c foo.c bar.c -o main"))
+(define-task build2 ()
+  (sh "cc main.c foo.c bar.c -o main")) ; uses shell to execute command
 
 (define-task test ()
-  (run-task build)
-  (run "/usr/bin/false" :noerr? #t)
-  (run '(echo "Hello") :quiet? #t)
+  (run-task build) ; execute task "build"
+  (run "/usr/bin/false" :noerr? #t) ; do not quit on error
+  (run '(echo "Hello") :quiet? #t) ; do not print output
   (run "./test"))
 
-(define-task test2 ()
+(define-task test2 () 
+  ;; runs shell equivalent: "ls -l | wc -l"
   (run-pipe '((ls -l)
               (wc -l))))
 
@@ -61,7 +62,7 @@ default task:
 
 ## Modules
 
-This modules imported already and can be used in `faberfile`:
+This modules are imported already and can be used in `faberfile`:
 - [scheme.list](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-lists)
 - [srfi-13](https://practical-scheme.net/gauche/man/gauche-refe/String-library.html#String-library)
 - [scheme.show](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-combinator-formatting)
