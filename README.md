@@ -90,6 +90,10 @@ You can import module in `faberfile` like this:
 - `run-file` - uses `process-output->file`
 - `task` - alias for `define-task`
 
+## Shell Integration
+
+- [Zsh](misc/zsh/faber.plugin.zsh) - Task autocompletion
+
 ## Requirements
 
 - [Gauche Scheme](http://practical-scheme.net/gauche/) installed
