@@ -84,9 +84,10 @@
                (copy-port out in))
              opts))))
 
-(define (run-file command . args)
+(define (run-file command filename :key (noerr? #f))
   (print-verbose-command command)
-  (apply process-output->file command args))
+  (process-output->file command filename
+                        :on-abnormal-exit (if noerr? #f :error)))
 
 (define (print-tasks)
   (show #t "Available tasks:" nl)
