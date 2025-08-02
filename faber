@@ -16,7 +16,7 @@
   `(hash-table-put! *task-table*
                     (quote ,name) (lambda ,(car rest) ,@(cdr rest))))
 
-(define-macro (task name . rest)
+(define-macro (deftask name . rest)
   `(define-task ,name ,@rest))
 
 (define (%run-task name args)
