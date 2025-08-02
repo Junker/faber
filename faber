@@ -41,12 +41,12 @@
               :on-abnormal-exit (if noerr? #f :error)
               :output (if quiet? :null #f)))
 
-(define (run-string command :key (noerr? #f))
+(define (run->string command :key (noerr? #f))
   (print-verbose-command command)
   (process-output->string command
                           :on-abnormal-exit (if noerr? #f :error)))
 
-(define (run-lines command :key (noerr? #f))
+(define (run->lines command :key (noerr? #f))
   (print-verbose-command command)
   (process-output->string-list command
                                :on-abnormal-exit (if noerr? #f :error)))
@@ -84,7 +84,7 @@
                (copy-port out in))
              opts))))
 
-(define (run-file command filename :key (noerr? #f))
+(define (run->file command filename :key (noerr? #f))
   (print-verbose-command command)
   (process-output->file command filename
                         :on-abnormal-exit (if noerr? #f :error)))

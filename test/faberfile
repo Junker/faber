@@ -24,10 +24,10 @@
 
 (define-task run-string ()
   (display (string-append "result:"
-                          (run-string '("dirname" "faberfile")))))
+                          (run->string '("dirname" "faberfile")))))
 
 (define-task run-lines ()
-  (display (length (run-lines '("ls" "-l")))))
+  (display (length (run->lines '("ls" "-l")))))
 
 (define-task run-pipe ()
   (run-pipe '((echo "Hello")
@@ -36,7 +36,7 @@
 (define-task run-file ()
   (call-with-temporary-file
    (lambda (_ file)
-     (run-file '(echo "Hello")
+     (run->file '(echo "Hello")
                file)
      (display (file->string file)))))
 
