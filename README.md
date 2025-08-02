@@ -12,7 +12,7 @@ Tasks are stored in a file called `faberfile`:
 (define-task task-name ()
   (display "This is a task!"))
 ;; OR
-(task task-name ()
+(deftask task-name ()
   (display "This is a task!"))
 ```
 
@@ -35,7 +35,7 @@ Tasks are stored in a file called `faberfile`:
               (wc -l))))
 
 (define-task sloc ()
-  (let1 cnt (run-string '(wc -l "*.c"))
+  (let1 cnt (run->string '(wc -l "*.c"))
     (show #t cnt " lines of code" nl)))
 ```
 
@@ -84,11 +84,11 @@ You can import module in `faberfile` like this:
 
 - `sh` - uses [`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem)
 - `run` - uses [`do-process`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dprocess)
-- `run-string` - uses [`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring)
-- `run-lines` - uses [`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist)
+- `run->string` - uses [`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring)
+- `run->lines` - uses [`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist)
 - `run-pipe` - uses [`do-pipeline`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dpipeline)
-- `run-file` - uses `process-output->file`
-- `task` - alias for `define-task`
+- `run->file` - uses `process-output->file`
+- `deftask` - alias for `define-task`
 
 ## Shell Integration
 
