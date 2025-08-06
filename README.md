@@ -3,9 +3,6 @@ Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme
 
 *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
 
-## Warning
-This software is still BETA quality. The APIs will be likely to change.
-
 ## Usage
 Tasks are stored in a file called `faberfile`:
 ```scheme
@@ -59,6 +56,8 @@ default task:
 (define-task default ()
   (run-task build))
 ```
+
+[More examples](test/faberfile)
 
 ## Modules
 
