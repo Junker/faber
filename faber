@@ -70,11 +70,11 @@
 (define-macro (run* . args)
   `(run (list ,@args)))
 
-(define-macro (run-string* . args)
-  `(run-string (list ,@args)))
+(define-macro (run->string* . args)
+  `(run->string (list ,@args)))
 
-(define-macro (run-lines* . args)
-  `(run-lines (list ,@args)))
+(define-macro (run->lines* . args)
+  `(run->lines (list ,@args)))
 
 (define (process-output->file command filename . opts)
   (call-with-output-file filename
