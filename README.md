@@ -36,6 +36,7 @@ Tasks are stored in a file called `faberfile`:
     (show #t cnt " lines of code" nl)))
 ```
 
+Shell:
 ```shell
 > faber build
 > faber sloc
@@ -47,6 +48,7 @@ tasks with arguments:
   (touch-file path))
 ```
 
+Shell:
 ```shell
 > faber touch test.txt
 ```
