@@ -110,6 +110,7 @@
                     (cdr pair) nl))
             '(("-f, --faberfile <FABERFILE>" . "Use <FABERFILE> as justfile")
               ("-l, --list" . "List available tasks")
+              ("-d, --working-directory <WORKING-DIRECTORY>" . "Use <WORKING-DIRECTORY> as working directory")
               ("-v, --verbose" . "Use verbose output"))))
 
 (define (exit-with-error err :optional code)
