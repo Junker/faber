@@ -106,11 +106,11 @@
         "[OPTIONS] [TASK] [ARGUMENTS]" nl nl)
   (show #t (as-yellow "Options:") nl)
   (for-each (lambda (pair)
-              (show #t (as-green "  " (fitted/right 34 (car pair)))
+              (show #t (as-green "  " (fitted/right 40 (car pair)))
                     (cdr pair) nl))
             '(("-f, --faberfile <FABERFILE>" . "Use <FABERFILE> as justfile")
               ("-l, --list" . "List available tasks")
-              ("-d, --working-directory <WORKING-DIRECTORY>" . "Use <WORKING-DIRECTORY> as working directory")
+              ("-d, --working-directory <WORKING-DIR>" . "Use <WORKING-DIR> as working directory")
               ("-v, --verbose" . "Use verbose output"))))
 
 (define (exit-with-error err :optional code)
