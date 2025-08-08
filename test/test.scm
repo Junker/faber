@@ -33,6 +33,9 @@
 (test* "--run" (build-path (current-directory) "faberfile")
        (run-faber "run"))
 
+(test* "--verbose" "\x1b;[32mRunning task 'verbose'...\x1b;[0m \x1b;[1mecho\x1b;[0m\x1b;[0m"
+       (run-faber "-v" "verbose"))
+
 (test* "--run-quiet" ""
        (run-faber "run-quiet"))
 
@@ -59,3 +62,6 @@
 
 (test* "--sh2" (home-directory)
        (run-faber "sh2"))
+
+(test* "--working-dir" (resolve-path (build-path (current-directory) ".."))
+       (run-faber "-d" ".." "working-dir"))

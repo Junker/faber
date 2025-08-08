@@ -45,3 +45,9 @@
 
 (define-task sh2 ()
   (sh "echo $HOME"))
+
+(define-task verbose ()
+  (run "echo"))
+
+(define-task working-dir ()
+  (display (string-append (current-directory) "/")))
