@@ -108,7 +108,7 @@
   (for-each (lambda (pair)
               (show #t (as-green "  " (fitted/right 40 (car pair)))
                     (cdr pair) nl))
-            '(("-f, --faberfile <FABERFILE>" . "Use <FABERFILE> as justfile")
+            '(("-f, --faberfile <FABERFILE>" . "Use <FABERFILE> as faberfile")
               ("-l, --list" . "List available tasks")
               ("-d, --working-directory <WORKING-DIR>" . "Use <WORKING-DIR> as working directory")
               ("-v, --verbose" . "Use verbose output"))))
