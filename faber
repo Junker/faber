@@ -134,6 +134,7 @@
      (%verbose "v|verbose" #f)
      . restargs)
     ;;
+    (set! *verbose* %verbose)
     (when %help
       (begin
         (print-help)
@@ -153,9 +154,7 @@
            (if (hash-table-exists? *task-table* 'default)
                (run-task default)
                (print-tasks)))
-          ((not (null? restargs))
-           (begin
-             (set! *verbose* %verbose)
-             (%run-task (string->symbol (car restargs))
-                        (cdr restargs))))))
+          (else
+           (%run-task (string->symbol (car restargs))
+                      (cdr restargs)))))
   0)
