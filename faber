@@ -21,7 +21,7 @@
 
 (define (%run-task name args)
   (when *verbose*
-    (show #t (as-green (format #f "Running task ~S..." name)) nl))
+    (show #t (as-green (format #f "Running task '~S'..." name)) nl))
   (let1 taskfun (hash-table-ref *task-table* name
                                 (lambda ()
                                   (exit-with-error
