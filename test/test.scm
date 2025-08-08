@@ -33,6 +33,9 @@
 (test* "--run" (build-path (current-directory) "faberfile")
        (run-faber "run"))
 
+(test* "--run*" (build-path (current-directory) "faberfile")
+       (run-faber "runstar"))
+
 (test* "--verbose" "\x1b;[32mRunning task 'verbose'...\x1b;[0m \x1b;[1mecho\x1b;[0m\x1b;[0m"
        (run-faber "-v" "verbose"))
 
@@ -47,6 +50,9 @@
 
 (test* "--run-string" "result:."
        (run-faber "run-string"))
+
+(test* "--run-string*" "result:."
+       (run-faber "run-string-star"))
 
 (test* "--run-lines" "3"
        (run-faber "run-lines"))

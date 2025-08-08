@@ -13,6 +13,9 @@
 (define-task run ()
   (run '("readlink" "-f" "faberfile")))
 
+(define-task runstar ()
+  (run* "readlink" "-f" "faberfile"))
+
 (define-task run-quiet ()
   (run '("echo" "TEST") :quiet? #t))
 
@@ -25,6 +28,10 @@
 (define-task run-string ()
   (display (string-append "result:"
                           (run->string '("dirname" "faberfile")))))
+
+(define-task run-string-star ()
+  (display (string-append "result:"
+                          (run->string* "dirname" "faberfile"))))
 
 (define-task run-lines ()
   (display (length (run->lines '("ls" "-l")))))
