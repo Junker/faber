@@ -102,3 +102,7 @@ You can import module in `faberfile` like this:
 ## Documentation
 
 - [Gauche Scheme Manual](https://practical-scheme.net/gauche/man/gauche-refe/index.html)
+
+## Alternatives
+
+- [Maak](https://codeberg.org/jjba23/maak) - The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)
