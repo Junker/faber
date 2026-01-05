@@ -44,8 +44,11 @@
   (call-with-temporary-file
    (lambda (_ file)
      (run->file '(echo "Hello")
-               file)
+                file)
      (display (file->string file)))))
+
+(define-task run-parallel ()
+  (run-parallel '((echo "Hello") (echo "World"))))
 
 (define-task sh ()
   (sh "echo 'Hello world'"))

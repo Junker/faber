@@ -1,5 +1,6 @@
 #!/usr/bin/env gosh
 
+(use srfi.13)
 (use gauche.test)
 (use gauche.process)
 (use file.util)
@@ -62,6 +63,10 @@
 
 (test* "--run-file" "Hello"
        (run-faber "run-file"))
+
+(test* "--run-file" '("Hello" "World")
+       (sort (string-split (run-faber "run-parallel")
+                           " ")))
 
 (test* "--sh" "Hello world"
        (run-faber "sh"))

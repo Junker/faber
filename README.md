@@ -26,10 +26,17 @@ Tasks are stored in a file called `faberfile`:
   (run '(echo "Hello") :quiet? #t) ; do not print output
   (run "./test"))
 
-(define-task test2 () 
+(define-task test-pipe ()
   ;; runs shell equivalent: "ls -l | wc -l"
   (run-pipe '((ls -l)
               (wc -l))))
+
+(define-task test-parallel ()
+  ;; return in 5 seconds
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2)))
+  ;; return in 10 seconds
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2))
+                :num-threads 1))
 
 (define-task sloc ()
   (let1 cnt (run->string '(wc -l "*.c"))
@@ -70,6 +77,7 @@ This modules are imported already and can be used in `faberfile`:
 - [scheme.show.color](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-combinator-formatting)
 - [gauche.process](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#High_002dlevel-process-interface)
 - [file.util](https://practical-scheme.net/gauche/man/gauche-refe/Filesystem-utilities.html#Filesystem-utilities)
+- [control.pmap](https://practical-scheme.net/gauche/man/gauche-refe/Parallel-map.html)
 
 You can import module in `faberfile` like this:
 ```scheme
