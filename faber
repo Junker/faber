@@ -34,7 +34,7 @@
 
 (define (print-verbose-command command)
   (when *verbose*
-    (show #t (as-bold (format #f "~A" command)) nl)))
+    (show #t (as-bold (x->string command)) nl)))
 
 (define (run command :key (noerr? #f) (quiet? #f))
   (print-verbose-command command)
@@ -53,8 +53,7 @@
                                :on-abnormal-exit (if noerr? #f :error)))
 
 (define (run-pipe commands :key (noerr? #f) (quiet? #f))
-  (print-verbose-command (string-join (map (lambda (cmd) (format #f "~A" cmd))
-                                           commands)
+  (print-verbose-command (string-join (map x->string commands)
                                       " | "))
   (do-pipeline commands
                :on-abnormal-exit (if noerr? #f :error)
