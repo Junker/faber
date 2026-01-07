@@ -28,6 +28,9 @@
 (test* "--test-with-arg" "myarg-result"
        (run-faber "test-with-arg" "myarg"))
 
+(test* "--test-with-key-arg" "myarg1-result"
+       (run-faber "test-with-key-arg" ":arg1" "myarg1"))
+
 (test* "--run-task" "test1"
        (run-faber "run-task"))
 

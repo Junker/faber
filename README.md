@@ -41,12 +41,21 @@ Tasks are stored in a file called `faberfile`:
 (define-task sloc ()
   (let1 cnt (run->string '(wc -l "*.c"))
     (show #t cnt " lines of code" nl)))
+
+(define-task test-arg (arg)
+  (format #t "Hello ~A" arg))
+
+(define-task test-key-arg (:key arg1 arg2)
+  (format #t "Hello ~A" arg1))
+
 ```
 
 Shell:
 ```shell
 > faber build
 > faber sloc
+> faber test-arg world
+> faber test-key-arg :arg1 world
 ```
 
 tasks with arguments:

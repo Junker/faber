@@ -162,5 +162,9 @@
                (print-tasks)))
           (else
            (%run-task (string->symbol (car restargs))
-                      (cdr restargs)))))
+                      (map (lambda (arg)
+                             (if (string-prefix? ":" arg)
+                                 (make-keyword (string-drop arg 1))
+                                 arg))
+                           (cdr restargs))))))
   0)

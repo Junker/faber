@@ -7,6 +7,9 @@
 (define-task test-with-arg (arg)
   (display (string-append arg "-result")))
 
+(define-task test-with-key-arg (:key arg1 arg2)
+  (display (string-append arg1 "-result")))
+
 (define-task run-task ()
   (run-task test1))
 
