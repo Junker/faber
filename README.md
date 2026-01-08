@@ -124,7 +124,7 @@ You can import module in `faberfile` like this:
 
 ## Shell Integration
 
-- [Zsh](misc/zsh/faber.plugin.zsh) - Task autocompletion
+- Zsh: [faber.plugin.zsh](misc/zsh/faber.plugin.zsh) - Task autocompletion
 
 ## Requirements
 
