@@ -3,8 +3,25 @@ Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme
 
 *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
 
-## Usage
-Tasks are stored in a file called `faberfile`:
+## Getting Started
+Tasks are stored in a file called `faberfile` in your project root. Here's a simple example:
+
+```scheme
+(define-task build ()
+  (run '(cc main.c foo.c bar.c -o main)))
+
+(define-task test ()
+  (run-task build)  ; execute task "build" first
+  (run "./test"))
+
+(define-task default ()
+  (run-task build))  ; default task when no task specified
+```
+
+## Task Definition Syntax
+
+### Basic tasks
+There are two equivalent ways to define a task:
 ```scheme
 (define-task task-name ()
   (display "This is a task!"))
@@ -13,72 +30,59 @@ Tasks are stored in a file called `faberfile`:
   (display "This is a task!"))
 ```
 
+### Tasks with Arguments
 ```scheme
-(define-task build ()
-  (run '(cc main.c foo.c bar.c -o main)))
-;; or
-(define-task build2 ()
-  (sh "cc main.c foo.c bar.c -o main")) ; uses shell to execute command
-
-(define-task test ()
-  (run-task build) ; execute task "build"
-  (run "/usr/bin/false" :noerr? #t) ; do not quit on error
-  (run '(echo "Hello") :quiet? #t) ; do not print output
-  (run "./test"))
-
-(define-task test-pipe ()
-  ;; runs shell equivalent: "ls -l | wc -l"
-  (run-pipe '((ls -l)
-              (wc -l))))
-
-(define-task test-parallel ()
-  ;; return in 5 seconds
-  (run-parallel '((sleep 3) (sleep 5) (sleep 2)))
-  ;; return in 10 seconds
-  (run-parallel '((sleep 3) (sleep 5) (sleep 2))
-                :num-threads 1))
-
-(define-task sloc ()
-  (let1 cnt (run->string '(wc -l "*.c"))
-    (show #t cnt " lines of code" nl)))
+(define-task touch (path)
+  (touch-file path))
 
 (define-task test-arg (arg)
   (format #t "Hello ~A" arg))
 
 (define-task test-key-arg (:key arg1 arg2)
   (format #t "Hello ~A" arg1))
-
 ```
 
-Shell:
+### Piped commands
+```scheme
+(define-task test-pipe ()
+  ;; Equivalent to: ls -l | wc -l
+  (run-pipe '((ls -l)
+              (wc -l))))
+```
+
+### Parallel Execution
+```scheme
+(define-task test-parallel ()
+  ;; Run tasks in parallel (returns in ~5 seconds)
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2)))
+
+  ;; Run sequentially with : num-threads 1 (returns in ~10 seconds)
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2))
+                :num-threads 1))
+```
+
+### Capturing output
+```scheme
+(define-task sloc ()
+  (let1 cnt (run->string '(wc -l "*. c"))
+    (show #t cnt " lines of code" nl)))
+```
+
+### More Examples
+For additional examples, see the test [faberfile](test/faberfile) in the repository.
+
+## Running Tasks
 ```shell
 > faber build
 > faber sloc
 > faber test-arg world
 > faber test-key-arg :arg1 world
-```
-
-tasks with arguments:
-```scheme
-(define-task touch (path)
-  (touch-file path))
-```
-
-Shell:
-```shell
 > faber touch test.txt
 ```
 
-default task:
-```scheme
-(define-task default ()
-  (run-task build))
-```
-
-[More examples](test/faberfile)
-
 ## Modules
 
+### Pre-imported Modules
 This modules are imported already and can be used in `faberfile`:
 - [scheme.list](https://practical-scheme.net/gauche/man/gauche-refe/R7RS-large.html#R7RS-lists)
 - [srfi-13](https://practical-scheme.net/gauche/man/gauche-refe/String-library.html#String-library)
@@ -88,9 +92,11 @@ This modules are imported already and can be used in `faberfile`:
 - [file.util](https://practical-scheme.net/gauche/man/gauche-refe/Filesystem-utilities.html#Filesystem-utilities)
 - [control.pmap](https://practical-scheme.net/gauche/man/gauche-refe/Parallel-map.html)
 
+### Importing Additional Modules
 You can import module in `faberfile` like this:
 ```scheme
 (use rfc.http)
+
 (define-task api-call ()
   (receive (code headers body)
       (http-get "example.org" "/api/test"
@@ -98,14 +104,15 @@ You can import module in `faberfile` like this:
 	(display body)))
 ```
 
-## Shorthands
+## Built-in Functions
 
-- `sh` - uses [`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem)
-- `run` - uses [`do-process`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dprocess)
-- `run->string` - uses [`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring)
-- `run->lines` - uses [`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist)
-- `run-pipe` - uses [`do-pipeline`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dpipeline)
-- `run->file` - uses `process-output->file`
+- `sh` - Execute command via shell ([`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem))
+- `run` - Execute command directly ([`do-process`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dprocess))
+- `run->string` - Capture command output as string ([`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring))
+- `run->lines` - Capture command output as list of strings ([`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist))
+- `run-pipe` - Execute commands pipeline ([`do-pipeline`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dpipeline))
+- `run-parallel` - Execute list of commands in parallel
+- `run->file` - Capture command output to file 
 - `deftask` - alias for `define-task`
 
 ## Shell Integration
