@@ -18,6 +18,13 @@ Tasks are stored in a file called `faberfile` in your project root. Here's a sim
   (run-task build))  ; default task when no task specified
 ```
 
+### Running Tasks
+```shell
+> faber build     # Run the build task
+> faber test      # Run the test task
+> faber           # Run the default task
+``` 
+
 ## Task Definition Syntax
 
 ### Basic tasks
