@@ -37,7 +37,7 @@ There are two equivalent ways to define a task:
   (display "This is a task!"))
 ```
 
-### Tasks with Arguments
+### Tasks with arguments
 ```scheme
 (define-task touch (path)
   (touch-file path))
@@ -57,18 +57,18 @@ There are two equivalent ways to define a task:
               (wc -l))))
 ```
 
-### Parallel Execution
+### Parallel execution
 ```scheme
 (define-task test-parallel ()
-  ;; Run tasks in parallel (returns in ~5 seconds)
+  ;; returns in ~5 seconds
   (run-parallel '((sleep 3) (sleep 5) (sleep 2)))
 
-  ;; Run sequentially with : num-threads 1 (returns in ~10 seconds)
+  ;; returns in ~10 seconds
   (run-parallel '((sleep 3) (sleep 5) (sleep 2))
                 :num-threads 1))
 ```
 
-### Capturing output
+### Capturing command output
 ```scheme
 (define-task sloc ()
   (let1 cnt (run->string '(wc -l "*. c"))
