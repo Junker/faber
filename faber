@@ -34,7 +34,7 @@
 
 (define (print-verbose-command command)
   (when *verbose*
-    (show #t (as-bold (x->string command)) nl)))
+    (show #t (as-bold (format #f "~S" command)) nl)))
 
 (define (run command :key (noerr? #f) (quiet? #f))
   (print-verbose-command command)
