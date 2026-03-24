@@ -60,9 +60,12 @@
                :output (if quiet? :null #f)))
 
 (define (run-parallel commands :key (num-threads #f) (noerr? #f) (quiet? #f))
-  (pmap run commands :mapper (if num-threads
-                                 (make-static-mapper num-threads)
-                                 (make-fully-concurrent-mapper))))
+  (pmap (lambda (cmd)
+          (run cmd :noerr? noerr? :quiet? quiet?))
+        commands
+        :mapper (if num-threads
+                    (make-static-mapper num-threads)
+                    (make-fully-concurrent-mapper))))
 
 (define (sh command :key (noerr? #f))
   (print-verbose-command command)
