@@ -13,69 +13,72 @@
                :output :null
                :error :null))
 
-(test* "--option-faberfile" #t
+(test* "option-faberfile" #t
        (run-faber-quiet "--faberfile" "./faberfile"))
 
-(test* "--option-faberfile2" #t
+(test* "option-faberfile2" #t
        (run-faber-quiet "--faberfile" (build-path (current-directory) "faberfile")))
 
-(test* "--option-faberfile3" (test-error)
+(test* "option-faberfile3" (test-error)
        (run-faber-quiet "--faberfile" "unexisted"))
 
-(test* "--test1" "test1"
+(test* "test1" "test1"
        (run-faber "test1"))
 
-(test* "--test-with-arg" "myarg-result"
+(test* "test-with-arg" "myarg-result"
        (run-faber "test-with-arg" "myarg"))
 
-(test* "--test-with-key-arg" "myarg1-result"
+(test* "test-with-key-arg" "myarg1-result"
        (run-faber "test-with-key-arg" ":arg1" "myarg1"))
 
-(test* "--run-task" "test1"
+(test* "run-task" "test1"
        (run-faber "run-task"))
 
-(test* "--run" (build-path (current-directory) "faberfile")
+(test* "run" (build-path (current-directory) "faberfile")
        (run-faber "run"))
 
-(test* "--run*" (build-path (current-directory) "faberfile")
+(test* "run*" (build-path (current-directory) "faberfile")
        (run-faber "runstar"))
 
-(test* "--verbose" "\x1b;[32mRunning task 'verbose'...\x1b;[0m \x1b;[1mecho\x1b;[0m\x1b;[0m"
+(test* "verbose" "\x1b;[32mRunning task 'verbose'...\x1b;[0m \x1b;[1m\"echo\"\x1b;[0m\x1b;[0m"
        (run-faber "-v" "verbose"))
 
-(test* "--run-quiet" ""
+(test* "run-quiet" ""
        (run-faber "run-quiet"))
 
-(test* "--run-w-error" (test-error)
+(test* "run-w-error" (test-error)
        (run-faber-quiet "run-w-error"))
 
 (test* "run-w-error-noerr" ""
        (run-faber "run-w-error-noerr"))
 
-(test* "--run-string" "result:."
+(test* "run-string" "result:."
        (run-faber "run-string"))
 
-(test* "--run-string*" "result:."
+(test* "run-string*" "result:."
        (run-faber "run-string-star"))
 
-(test* "--run-lines" "3"
+(test* "run-lines" "3"
        (run-faber "run-lines"))
 
-(test* "--run-pipe" "1"
+(test* "run-pipe" "1"
        (run-faber "run-pipe"))
 
-(test* "--run-file" "Hello"
+(test* "run-file" "Hello"
        (run-faber "run-file"))
 
-(test* "--run-file" '("Hello" "World")
+(test* "run-parallel" '("Hello" "World")
        (sort (string-split (run-faber "run-parallel")
                            " ")))
 
-(test* "--sh" "Hello world"
+(test* "run-parallel-quiet" ""
+       (run-faber "run-parallel-quiet"))
+
+(test* "sh" "Hello world"
        (run-faber "sh"))
 
-(test* "--sh2" (home-directory)
+(test* "sh2" (home-directory)
        (run-faber "sh2"))
 
-(test* "--working-dir" (resolve-path (build-path (current-directory) ".."))
+(test* "working-dir" (resolve-path (build-path (current-directory) ".."))
        (run-faber "-d" ".." "working-dir"))

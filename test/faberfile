@@ -53,6 +53,10 @@
 (define-task run-parallel ()
   (run-parallel '((echo "Hello") (echo "World"))))
 
+(define-task run-parallel-quiet ()
+  (run-parallel '((echo "Hello") (echo "World"))
+                :quiet? #t))
+
 (define-task sh ()
   (sh "echo 'Hello world'"))
 
