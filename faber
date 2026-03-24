@@ -13,12 +13,12 @@
 (define *default-file-name* "faberfile")
 (define *verbose* #f)
 
-(define-macro (define-task name . rest)
+(define-macro (define-task name args . body)
   `(hash-table-put! *task-table*
-                    (quote ,name) (lambda ,(car rest) ,@(cdr rest))))
+                    (quote ,name) (lambda ,args ,@body)))
 
-(define-macro (deftask name . rest)
-  `(define-task ,name ,@rest))
+(define-macro (deftask name args . body)
+  `(define-task ,name ,args ,@rest))
 
 (define (%run-task name args)
   (when *verbose*
