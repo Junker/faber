@@ -71,7 +71,7 @@ There are two equivalent ways to define a task:
 ### Capturing command output
 ```scheme
 (define-task sloc ()
-  (let1 cnt (run->string '(wc -l "*. c"))
+  (let1 cnt (run->string '(wc -l "*.c"))
     (show #t cnt " lines of code" nl)))
 ```
 
@@ -121,6 +121,9 @@ You can import module in `faberfile` like this:
 - `run-parallel` - Execute list of commands in parallel
 - `run->file` - Capture command output to file 
 - `deftask` - alias for `define-task`
+- `run*` - Execute command directly without quoting list (e.g., `(run* ls -l)`)
+- `run->string*` - Capture output without quoting list
+- `run->lines*` - Capture lines without quoting list
 
 ## Shell Integration
 
