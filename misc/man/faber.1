@@ -1,0 +1,242 @@
+.TH FABER 1 "2025-06-18" "Faber" "User Commands"
+.SH NAME
+faber \- CLI task runner using Gauche Scheme
+.SH SYNOPSIS
+.B faber
+[\fBOPTIONS\fR] [\fBTASK\fR] [\fBARGUMENTS\fR] ...
+.SH DESCRIPTION
+.B faber
+is a command-line task runner that uses
+.I Gauche Scheme
+as its scripting language.
+Unlike traditional build systems that rely on custom configuration formats,
+faber lets you write task definitions using familiar Scheme syntax in a file
+called
+.IR faberfile .
+.PP
+When invoked without a task name, faber runs the task named
+.B default
+if one exists; otherwise it lists all available tasks.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.TP
+.BR \-l ", " \-\-list
+List all available tasks with their descriptions and exit.
+.TP
+.BR \-s ", " \-\-summary
+Print all task names as a space-separated list on a single line.
+This is primarily used by shell completion scripts.
+.TP
+.BR \-f ", " \-\-faberfile \ \fIFABERFILE\fR
+Use
+.I FABERFILE
+as the task definition file instead of the default
+.IR faberfile .
+Both relative and absolute paths are accepted.
+.TP
+.BR \-d ", " \-\-working-directory \ \fIWORKING-DIR\fR
+Change to
+.I WORKING-DIR
+before loading the faberfile and running tasks.
+By default faber changes to the directory containing the faberfile.
+.TP
+.BR \-v ", " \-\-verbose
+Print the commands being executed and a message before each task runs.
+.SH THE FABERFILE
+A faberfile is a Gauche Scheme source file.
+When faber starts, it loads the faberfile, which defines tasks using the
+macros and built-in functions described below.
+.SS Pre-imported modules
+The following Gauche modules are already imported in every faberfile:
+.PP
+.RS
+.IR scheme.list ,
+.IR srfi-13 ,
+.IR scheme.show ,
+.IR scheme.show.color ,
+.IR gauche.process ,
+.IR file.util ,
+.IR control.pmap
+.RE
+.PP
+Additional modules can be imported at the top of the faberfile with
+.BR (use\ \fImodule\fR) .
+.SS Task definition
+.TP
+.BI "(define-task " "name" " (" "args" ") " "body" ")"
+Define a new task called
+.I name
+with the given argument list and body.
+.TP
+.BI "(deftask " "name" " (" "args" ") " "body" ")"
+Alias for
+.BR define-task .
+.SS Running tasks from within tasks
+.TP
+.BI "(run-task " "name" " . " "args" ")"
+Execute another task by name with the given arguments.
+.SS Command execution
+.TP
+.BI "(run " "command" " :key noerr? quiet?)"
+Execute
+.I command
+(a list of strings).
+With
+.B :noerr? #t
+non-zero exits are ignored.
+With
+.B :quiet? #t
+output is suppressed.
+.TP
+.BI "(run* " "args" ")"
+Like
+.B run
+but the command and its arguments are passed without quoting as a list, e.g.
+.BR (run*\ ls\ -l) .
+.TP
+.BI "(run->string " "command" " :key noerr?)"
+Execute
+.I command
+and return its output as a single string.
+.TP
+.BI "(run->string* " "args" ")"
+Like
+.B run->string
+but without quoting the command as a list.
+.TP
+.BI "(run->lines " "command" " :key noerr?)"
+Execute
+.I command
+and return its output as a list of string lines.
+.TP
+.BI "(run->lines* " "args" ")"
+Like
+.B run->lines
+but without quoting the command as a list.
+.TP
+.BI "(run-pipe " "commands" " :key noerr? quiet?)"
+Execute a pipeline of commands, piping each command's standard output into the
+next command's standard input.
+.I commands
+is a list of command lists.
+.TP
+.BI "(run-parallel " "commands" " :key num-threads noerr? quiet?)"
+Execute a list of commands concurrently.
+With
+.B :num-threads
+.B n
+at most
+.I n
+commands run at once; otherwise all commands run fully concurrently.
+.TP
+.BI "(run->file " "command" " " " "filename" " :key noerr?)"
+Execute
+.I command
+and write its output to
+.IR filename .
+.TP
+.BI "(sh " "command" " :key noerr?)"
+Execute a
+.I command
+string through the system shell
+.RB ( sys-system ).
+.TP
+.BI "(exec " "command" ")"
+Replace the current process with
+.I command
+.RB ( sys-exec ).
+This function never returns.
+.SH ARGUMENTS
+Task arguments are passed on the command line after the task name.
+Arguments prefixed with
+.B :
+are interpreted as keyword arguments.
+.SS Examples
+.PP
+.RS
+.EX
+faber build
+faber test-arg world
+faber test-key-arg :arg1 value
+faber touch /tmp/hello.txt
+.EE
+.RE
+.SH EXAMPLES
+.SS A simple faberfile
+.PP
+.RS
+.EX
+(define-task build ()
+  (run '(cc main.c foo.c bar.c -o main)))
+
+(define-task test ()
+  (run-task build)
+  (run "./test"))
+
+(define-task default ()
+  (run-task build))
+.EE
+.RE
+.SS Capturing output
+.PP
+.RS
+.EX
+(define-task sloc ()
+  (let1 cnt (run->string '(wc -l "*.c"))
+    (show #t cnt " lines of code" nl)))
+.EE
+.RE
+.SS Piped commands
+.PP
+.RS
+.EX
+(define-task count-lines ()
+  (run-pipe '((ls -l) (wc -l))))
+.EE
+.RE
+.SS Parallel execution
+.PP
+.RS
+.EX
+(define-task parallel ()
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2)))
+  ;; with a thread limit of 1
+  (run-parallel '((sleep 3) (sleep 5) (sleep 2))
+                :num-threads 1))
+.EE
+.RE
+.SH FILES
+.TP
+.I faberfile
+Default task definition file, loaded from the current directory or the
+directory specified with
+.BR \-d .
+.SH ENVIRONMENT
+.TP
+.B HOME
+Used by Gauche's
+.I (home-directory)
+to locate the user's home directory.
+.SH EXIT STATUS
+.TP
+0
+Success.
+.TP
+1
+General error (e.g., faberfile not found, task does not exist, command failed).
+.SH SHELL INTEGRATION
+.TP
+Zsh
+Source
+.I misc/zsh/faber.plugin.zsh
+for task name autocompletion.
+.SH SEE ALSO
+.BR make (1),
+.PP
+Gauche Scheme Manual:
+.UR https://practical-scheme.net/gauche/man/gauche-refe/index.html
+.UE
+.SH AUTHOR
+Faber project.
