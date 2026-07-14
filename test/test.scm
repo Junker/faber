@@ -83,5 +83,8 @@
 (test* "exec" "HELLO"
        (run-faber "exec"))
 
+(test* "exec2" "WORLD"
+       (run-faber "exec2"))
+
 (test* "working-dir" (resolve-path (build-path (current-directory) ".."))
        (run-faber "-d" ".." "working-dir"))

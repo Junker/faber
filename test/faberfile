@@ -67,6 +67,9 @@
   (exec '("echo" "HELLO"))
   (display "this text will never print"))
 
+(define-task exec2 ()
+  (exec '(echo WORLD)))
+
 (define-task verbose ()
   (run "echo"))
 
