@@ -13,9 +13,9 @@ Here's a simple example:
 (define-task build ()
   (run '(cc main.c foo.c bar.c -o main)))
 
-(define-task test ()
+(define-task start ()
   (run-task build)  ; execute task "build" first
-  (run "./test"))
+  (run "./main"))
 
 (define-task default ()
   (run-task build))  ; default task when no task specified
