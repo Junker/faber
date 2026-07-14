@@ -145,7 +145,7 @@
               ("-v, --verbose" . "Use verbose output"))))
 
 (define (exit-with-error err :optional code)
-  (show (current-error-port) (as-red err) (nl))
+  (show (current-error-port) (as-red err) nl)
   (exit (or code 1)))
 
 (define (load-faber-file file)
