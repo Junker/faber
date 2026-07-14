@@ -127,7 +127,7 @@ You can import module in `faberfile` like this:
 - `run->string*` - Capture output without quoting list
 - `run->lines*` - Capture lines without quoting list
 - `sh` - Execute command via shell ([`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem))
-- `exec` - Replace the current process with the given command ([`sys-exec`]()).
+- `exec` - Replace the current process with the given command ([`sys-exec`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dexec)).
 
 ## Shell Integration
 
