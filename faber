@@ -14,10 +14,12 @@
 (define *verbose* #f)
 
 (define-macro (define-task name args . body)
+  "Define a new task with the given name, arguments, and body."
   `(hash-table-put! *task-table*
                     (quote ,name) (lambda ,args ,@body)))
 
 (define-macro (deftask name args . body)
+  "Alias for define-task."
   `(define-task ,name ,args ,@rest))
 
 (define (%run-task name args)
@@ -30,6 +32,7 @@
     (apply taskfun args)))
 
 (define-macro (run-task name . args)
+  "Execute another task by name with the given arguments."
   `(%run-task (quote ,name) (list ,@args)))
 
 (define (print-verbose-command command)
@@ -37,22 +40,26 @@
     (show #t (as-bold (format #f "~S" command)) nl)))
 
 (define (run command :key (noerr? #f) (quiet? #f))
+  "Execute a command directly, suppressing non-zero exits with :noerr? and output with :quiet?."
   (print-verbose-command command)
   (do-process command
               :on-abnormal-exit (if noerr? #f :error)
               :output (if quiet? :null #f)))
 
 (define (run->string command :key (noerr? #f))
+  "Capture a command's output as a single string."
   (print-verbose-command command)
   (process-output->string command
                           :on-abnormal-exit (if noerr? #f :error)))
 
 (define (run->lines command :key (noerr? #f))
+  "Capture a command's output as a list of string lines."
   (print-verbose-command command)
   (process-output->string-list command
                                :on-abnormal-exit (if noerr? #f :error)))
 
 (define (run-pipe commands :key (noerr? #f) (quiet? #f))
+  "Execute a pipeline of commands, piping each command's output into the next."
   (print-verbose-command (string-join (map x->string commands)
                                       " | "))
   (do-pipeline commands
@@ -60,6 +67,7 @@
                :output (if quiet? :null #f)))
 
 (define (run-parallel commands :key (num-threads #f) (noerr? #f) (quiet? #f))
+  "Execute a list of commands in parallel, optionally limited to :num-threads."
   (pmap (lambda (cmd)
           (run cmd :noerr? noerr? :quiet? quiet?))
         commands
@@ -68,6 +76,7 @@
                     (make-fully-concurrent-mapper))))
 
 (define (sh command :key (noerr? #f))
+  "Execute a command string via the shell (sys-system)."
   (print-verbose-command command)
   (let1 errcode (sys-system command)
     (if (and (not noerr?)
@@ -76,16 +85,20 @@
                        errcode)))))
 
 (define (exec command)
+  "Replace the current process with the given command (sys-exec), so this function never returns."
   (print-verbose-command command)
   (sys-exec (car command) command))
 
 (define-macro (run* . args)
+  "Like run, but allows passing command arguments without quoting as a list."
   `(run (list ,@args)))
 
 (define-macro (run->string* . args)
+  "Like run->string, but allows passing command arguments without quoting as a list."
   `(run->string (list ,@args)))
 
 (define-macro (run->lines* . args)
+  "Like run->lines, but allows passing command arguments without quoting as a list."
   `(run->lines (list ,@args)))
 
 (define (process-output->file command filename . opts)
@@ -97,6 +110,7 @@
              opts))))
 
 (define (run->file command filename :key (noerr? #f))
+  "Capture a command's output and write it to a file."
   (print-verbose-command command)
   (process-output->file command filename
                         :on-abnormal-exit (if noerr? #f :error)))
