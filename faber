@@ -87,11 +87,7 @@
 (define (exec command)
   "Replace the current process with the given command (sys-exec), so this function never returns."
   (print-verbose-command command)
-  (let1 command-strs (map (lambda (item)
-                            (if (symbol? item)
-                                (symbol->string item)
-                                item))
-                          command)
+  (let1 command-strs (map x->string command)
     (sys-exec (car command-strs) command-strs)))
 
 (define-macro (run* . args)
