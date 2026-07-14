@@ -4,7 +4,10 @@ Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme
 > *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
 
 ## Getting Started
-Tasks are stored in a file called `faberfile` in your project root. Here's a simple example:
+Tasks are stored in a file called `faberfile` in your project root.
+A faberfile is a Gauche Scheme source file. When faber starts, it loads the faberfile,
+which defines tasks using the macros and built-in functions described below.
+Here's a simple example:
 
 ```scheme
 (define-task build ()
@@ -23,7 +26,7 @@ Tasks are stored in a file called `faberfile` in your project root. Here's a sim
 > faber build     # Run the build task
 > faber test      # Run the test task
 > faber           # Run the default task
-``` 
+```
 
 ## Task Definition Syntax
 
@@ -113,17 +116,18 @@ You can import module in `faberfile` like this:
 
 ## Built-in Functions
 
-- `sh` - Execute command via shell ([`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem))
 - `run` - Execute command directly ([`do-process`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dprocess))
 - `run->string` - Capture command output as string ([`process-output->string`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring))
 - `run->lines` - Capture command output as list of strings ([`process-output->string-list`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-process_002doutput_002d_003estring_002dlist))
 - `run-pipe` - Execute commands pipeline ([`do-pipeline`](https://practical-scheme.net/gauche/man/gauche-refe/High_002dlevel-process-interface.html#index-do_002dpipeline))
 - `run-parallel` - Execute list of commands in parallel
-- `run->file` - Capture command output to file 
+- `run->file` - Capture command output to file
 - `deftask` - alias for `define-task`
 - `run*` - Execute command directly without quoting list (e.g., `(run* ls -l)`)
 - `run->string*` - Capture output without quoting list
 - `run->lines*` - Capture lines without quoting list
+- `sh` - Execute command via shell ([`sys-system`](https://practical-scheme.net/gauche/man/gauche-refe/System-interface.html#index-sys_002dsystem))
+- `exec` - Replace the current process with the given command ([`sys-exec`]()).
 
 ## Shell Integration
 
