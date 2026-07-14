@@ -63,6 +63,10 @@
 (define-task sh2 ()
   (sh "echo $HOME"))
 
+(define-task exec ()
+  (exec '("echo" "HELLO"))
+  (display "this text will never print"))
+
 (define-task verbose ()
   (run "echo"))
 

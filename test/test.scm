@@ -80,5 +80,8 @@
 (test* "sh2" (home-directory)
        (run-faber "sh2"))
 
+(test* "exec" "HELLO"
+       (run-faber "exec"))
+
 (test* "working-dir" (resolve-path (build-path (current-directory) ".."))
        (run-faber "-d" ".." "working-dir"))

@@ -75,6 +75,10 @@
         (error (format #f "process exited abnormally with exit code ~A"
                        errcode)))))
 
+(define (exec command)
+  (print-verbose-command command)
+  (sys-exec (car command) command))
+
 (define-macro (run* . args)
   `(run (list ,@args)))
 
