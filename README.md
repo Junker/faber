@@ -1,12 +1,12 @@
-Faber is a CLI task runner designed to leverage the power and flexibility of Gauche Scheme.
+Faber is a CLI task runner designed to leverage the power and flexibility of Gauche Scheme. \
 Unlike other build systems that rely on custom formats, Faber uses Gauche Scheme, allowing you to write build scripts using familiar Scheme syntax.
 
 > *“Homo **faber** suae quisque fortunae”* - Every man is the **maker** of his own fate.
 
 ## Getting Started
-Tasks are stored in a file called `faberfile` in your project root.
+Tasks are stored in a file called `faberfile` in your project root. \
 A faberfile is a Gauche Scheme source file. When faber starts, it loads the faberfile,
-which defines tasks using the macros and built-in functions described below.
+which defines tasks using the macros and built-in functions described below. \
 Here's a simple example:
 
 ```scheme
